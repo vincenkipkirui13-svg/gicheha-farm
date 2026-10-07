@@ -1,6 +1,6 @@
-const CACHE_NAME='gicheha-images-v7';
+const CACHE_NAME='gicheha-images-v8';
 const IMAGE_URLS=[
-  "https://commons.wikimedia.org/wiki/Special:FilePath/Lacaune%20sheep%20%28Belagro-2021%29.jpg?width=1400",
+  "https://commons.wikimedia.org/wiki/Special:FilePath/lacaune_m.jpg",
   "https://commons.wikimedia.org/wiki/Special:FilePath/Holstein%20Friesian%20UK%20Yorkshire%20July%202011.jpg?width=1600",
   "https://commons.wikimedia.org/wiki/Special:FilePath/Holstein%20Friesian%20UK%20Yorkshire%20July%202011.jpg?width=1200",
   "https://commons.wikimedia.org/wiki/Special:FilePath/Young%20Ayrshire%20cow%20%2852181577014%29.jpg?width=1200",
@@ -8,21 +8,21 @@ const IMAGE_URLS=[
   "https://commons.wikimedia.org/wiki/Special:FilePath/Brown%20Swiss%20cows%20on%20Simplonpass%2001.jpg?width=1200",
   "https://commons.wikimedia.org/wiki/Special:FilePath/Jersey%20cattle.jpg?width=1200",
   "https://commons.wikimedia.org/wiki/Special:FilePath/Sahiwal%20Cattle%20in%20Kenya.jpg?width=1200",
-  "https://commons.wikimedia.org/wiki/Special:FilePath/Boran%20bull%20at%20kasarani.jpg?width=1400",
+  "https://raw.githubusercontent.com/vincenkipkirui13-svg/delamere-farm/main/public/animal-photos/cattle/boran/boran-01.jfif",
   "https://commons.wikimedia.org/wiki/Special:FilePath/Bezerros%20Girolando%20Pastando.jpg?width=1200",
   "https://commons.wikimedia.org/wiki/Special:FilePath/Brahman%20cattle%20in%20Costa%20Rica.jpg?width=1200",
   "https://commons.wikimedia.org/wiki/Special:FilePath/Gir%20cattle.jpg?width=1200",
   "https://commons.wikimedia.org/wiki/Special:FilePath/Dorper%20Sheep%20Breed%20Antigua%209187.jpg?width=1200",
   "https://commons.wikimedia.org/wiki/Special:FilePath/Hampshire%20Down%20sheep%20J5.jpg?width=1200",
-  "https://commons.wikimedia.org/wiki/Special:FilePath/Merino%20sheep.%20%2852908265984%29.jpg?width=1400",
-  "https://commons.wikimedia.org/wiki/Special:FilePath/Romney%20sheep%20on%20Romney%20Marsh%20-%20geograph.org.uk%20-%205571120.jpg?width=1400",
+  "https://commons.wikimedia.org/wiki/Special:FilePath/Merino%20Sheep.jpg?width=1400",
+  "https://commons.wikimedia.org/wiki/Special:FilePath/Romney%20dreds.jpg?width=1400",
   "https://commons.wikimedia.org/wiki/Special:FilePath/Boer%20goat.jpg?width=1200",
-  "https://commons.wikimedia.org/wiki/Special:FilePath/Galla%20goat%20at%20kasarani.jpg?width=1000",
-  "https://commons.wikimedia.org/wiki/Special:FilePath/Alpine%20Goat.jpg?width=1200",
+  "https://pbs.twimg.com/media/GzSY905WoAA_2l8.jpg",
+  "https://commons.wikimedia.org/wiki/Special:FilePath/Alpine%20SDA2011.JPG?width=1400",
   "https://commons.wikimedia.org/wiki/Special:FilePath/Toggenburger%20Goat.jpg?width=1200",
   "https://commons.wikimedia.org/wiki/Special:FilePath/Saanen%20goat-04282.jpg?width=1200",
-  "https://commons.wikimedia.org/wiki/Special:FilePath/Kalahari%20Red%20Goat%2C%20April%202023.jpg?width=1400",
-  "https://commons.wikimedia.org/wiki/Special:FilePath/Potato%20tubers.jpg?width=1400"
+  "https://raw.githubusercontent.com/vincenkipkirui13-svg/delamere-farm/main/public/animal-photos/goats/kalahari-red/kalahari-red-01.jfif",
+  "https://commons.wikimedia.org/wiki/Special:FilePath/Potatoe%20seeds.jpg?width=1400"
 ];
 
 self.addEventListener('install',event=>{
