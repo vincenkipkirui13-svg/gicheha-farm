@@ -15,7 +15,15 @@ const IMAGE_URLS=[
 self.addEventListener('install',event=>{
   event.waitUntil(
     caches.open(CACHE_NAME)
-      .then(cache=>Promise.allSettled(IMAGE_URLS.map(url=>cache.add(url))))
+      .then(async cache=>{
+        await Promise.allSettled(IMAGE_URLS.map(async url=>{
+          try{
+            const response=await fetch(url,{mode:'no-cors',cache:'no-cache'});
+            if(response.ok || response.type==='opaque') await cache.put(url,response.clone());
+          }catch(error){}
+        }));
+        return cache;
+      })
       .then(()=>self.skipWaiting())
   );
 });
