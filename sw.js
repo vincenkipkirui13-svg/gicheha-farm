@@ -1,5 +1,6 @@
 const CACHE_NAME='gicheha-images-v4';
 const IMAGE_URLS=[
+  "https://commons.wikimedia.org/wiki/Special:FilePath/Livestock_at_the_grazing_area.jpg?width=1280",
   "https://commons.wikimedia.org/wiki/Special:FilePath/Livestock_at_the_grazing_area.jpg?width=800",
   "https://commons.wikimedia.org/wiki/Special:FilePath/Dorper%20sheep%20%28Belagro-2021%29.jpg?width=800",
   "https://commons.wikimedia.org/wiki/Special:FilePath/Jersey%20cattle.jpg?width=800",
