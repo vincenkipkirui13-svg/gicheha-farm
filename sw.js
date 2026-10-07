@@ -1,27 +1,12 @@
-const CACHE_NAME='gicheha-images-v8';
+const CACHE_NAME='gicheha-images-v9';
 const IMAGE_URLS=[
-  "https://www.oebsz.at/fileadmin/user_upload/lacaune_m.jpg",
-  "https://commons.wikimedia.org/wiki/Special:FilePath/Holstein%20Friesian%20UK%20Yorkshire%20July%202011.jpg?width=1600",
-  "https://commons.wikimedia.org/wiki/Special:FilePath/Holstein%20Friesian%20UK%20Yorkshire%20July%202011.jpg?width=1200",
-  "https://commons.wikimedia.org/wiki/Special:FilePath/Young%20Ayrshire%20cow%20%2852181577014%29.jpg?width=1200",
-  "https://commons.wikimedia.org/wiki/Special:FilePath/Guernsey%20Dairy%20Cow.jpg?width=1200",
-  "https://commons.wikimedia.org/wiki/Special:FilePath/Brown%20Swiss%20cows%20on%20Simplonpass%2001.jpg?width=1200",
-  "https://commons.wikimedia.org/wiki/Special:FilePath/Jersey%20cattle.jpg?width=1200",
-  "https://commons.wikimedia.org/wiki/Special:FilePath/Sahiwal%20Cattle%20in%20Kenya.jpg?width=1200",
-  "https://raw.githubusercontent.com/vincenkipkirui13-svg/delamere-farm/main/public/animal-photos/cattle/boran/boran-01.jfif",
-  "https://commons.wikimedia.org/wiki/Special:FilePath/Bezerros%20Girolando%20Pastando.jpg?width=1200",
-  "https://commons.wikimedia.org/wiki/Special:FilePath/Brahman%20cattle%20in%20Costa%20Rica.jpg?width=1200",
-  "https://commons.wikimedia.org/wiki/Special:FilePath/Gir%20cattle.jpg?width=1200",
-  "https://commons.wikimedia.org/wiki/Special:FilePath/Dorper%20Sheep%20Breed%20Antigua%209187.jpg?width=1200",
-  "https://commons.wikimedia.org/wiki/Special:FilePath/Hampshire%20Down%20sheep%20J5.jpg?width=1200",
-  "https://commons.wikimedia.org/wiki/Special:FilePath/Merino%20Sheep.jpg?width=1400",
-  "https://commons.wikimedia.org/wiki/Special:FilePath/Romney%20dreds.jpg?width=1400",
-  "https://commons.wikimedia.org/wiki/Special:FilePath/Boer%20goat.jpg?width=1200",
-  "https://pbs.twimg.com/media/GzSY905WoAA_2l8.jpg",
-  "https://commons.wikimedia.org/wiki/Special:FilePath/Alpine%20SDA2011.JPG?width=1400",
-  "https://commons.wikimedia.org/wiki/Special:FilePath/Toggenburger%20Goat.jpg?width=1200",
-  "https://commons.wikimedia.org/wiki/Special:FilePath/Saanen%20goat-04282.jpg?width=1200",
-  "https://raw.githubusercontent.com/vincenkipkirui13-svg/delamere-farm/main/public/animal-photos/goats/kalahari-red/kalahari-red-01.jfif",
+  "https://qcat.wocat.net/media/bd/9/bd942f70-b729-4925-9bcd-884af297c842.jpg",
+  "https://cdn.shopify.com/s/files/1/0509/2871/3882/files/merinos_480x480.jpg?v=1634916864",
+  "https://image.chitra.live/api/v1/wps/57f0425/97a4b250-614e-43b0-87e2-064ab1f79ad3/0/Matt-Smith-DSC08845-720x480.jpg",
+  "https://rastafarm.co.ke/images/gallabuck.jpg",
+  "https://mountainduckeggs.com/cdn/shop/articles/IMG_8716.jpg?v=1756866909&width=1200",
+  "https://farmow.com/article-image/1600847811.jpg",
+  "https://i0.wp.com/gazettelacaune.fr/wp-content/uploads/2018/04/brebis_lacaune.jpg?fit=2048%2C1365&ssl=1",
   "https://commons.wikimedia.org/wiki/Special:FilePath/Potatoe%20seeds.jpg?width=1400"
 ];
 
