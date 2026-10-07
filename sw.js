@@ -1,25 +1,29 @@
-const CACHE_NAME='gicheha-images-v5';
+const CACHE_NAME='gicheha-images-v6';
 const IMAGE_URLS=[
-  "https://commons.wikimedia.org/wiki/Special:FilePath/Friesian%20cow.jpg?width=800",
-  "https://commons.wikimedia.org/wiki/Special:FilePath/AyrshireCattle1.JPG?width=800",
-  "https://commons.wikimedia.org/wiki/Special:FilePath/Guernsey%20cattle.jpg?width=800",
-  "https://commons.wikimedia.org/wiki/Special:FilePath/Brown%20swiss.jpg?width=800",
-  "https://commons.wikimedia.org/wiki/Special:FilePath/Jersey%20cattle.jpg?width=800",
-  "https://commons.wikimedia.org/wiki/Special:FilePath/Sahiwal%20Cattle%20in%20Kenya.jpg?width=800",
-  "https://commons.wikimedia.org/wiki/Special:FilePath/Boran%20cattle%20in%20Kenya.jpg?width=800",
-  "https://commons.wikimedia.org/wiki/Special:FilePath/Girolando.jpg?width=800",
-  "https://commons.wikimedia.org/wiki/Special:FilePath/Dorper%20sheep%20%28Belagro-2021%29.jpg?width=800",
-  "https://commons.wikimedia.org/wiki/Special:FilePath/Hampshire%20Down%20Sheep.JPG?width=800",
-  "https://commons.wikimedia.org/wiki/Special:FilePath/Merino%20Sheep.jpg?width=800",
-  "https://commons.wikimedia.org/wiki/Special:FilePath/Romney%20sheep%20and%20lamb%20-%20geograph.org.uk%20-%206164208.jpg?width=800",
-  "https://commons.wikimedia.org/wiki/Special:FilePath/Boer%20Goat%20%2850374051253%29.jpg?width=800",
-  "https://commons.wikimedia.org/wiki/Special:FilePath/Galla%20goat%20at%20kasarani.jpg?width=800",
-  "https://commons.wikimedia.org/wiki/Special:FilePath/Alpine%20Goat.jpg?width=800",
-  "https://commons.wikimedia.org/wiki/Special:FilePath/Toggenburg%20goat.jpg?width=800",
-  "https://commons.wikimedia.org/wiki/Special:FilePath/Lucerne%20%284656862796%29.jpg?width=800",
-  "https://commons.wikimedia.org/wiki/Special:FilePath/Alfalfa%20field%20-%20geograph.org.uk%20-%204092964.jpg?width=800",
-  "https://www.kenyanews.go.ke/wp-content/uploads/2022/11/SEEDS-1200x630.jpg?width=800",
-  "https://commons.wikimedia.org/wiki/Special:FilePath/Livestock_at_the_grazing_area.jpg?width=1280"
+  "https://commons.wikimedia.org/wiki/Special:FilePath/Holstein%20Friesian%20UK%20Yorkshire%20July%202011.jpg?width=1600",
+  "https://commons.wikimedia.org/wiki/Special:FilePath/Holstein%20Friesian%20UK%20Yorkshire%20July%202011.jpg?width=1200",
+  "https://commons.wikimedia.org/wiki/Special:FilePath/Young%20Ayrshire%20cow%20%2852181577014%29.jpg?width=1200",
+  "https://commons.wikimedia.org/wiki/Special:FilePath/Guernsey%20cattle%20in%20Minamigaoka%20Dairy%2002.jpg?width=1200",
+  "https://commons.wikimedia.org/wiki/Special:FilePath/Brown%20Swiss%20cows%20on%20Simplonpass%2001.jpg?width=1200",
+  "https://commons.wikimedia.org/wiki/Special:FilePath/Jersey%20cattle.jpg?width=1200",
+  "https://commons.wikimedia.org/wiki/Special:FilePath/Sahiwal%20Cattle%20in%20Kenya.jpg?width=1200",
+  "https://commons.wikimedia.org/wiki/Special:FilePath/Boran%20bull%20at%20kasarani.jpg?width=1200",
+  "https://commons.wikimedia.org/wiki/Special:FilePath/Bezerros%20Girolando%20Pastando.jpg?width=1200",
+  "https://commons.wikimedia.org/wiki/Special:FilePath/Brahman%20cattle%20in%20Costa%20Rica.jpg?width=1200",
+  "https://commons.wikimedia.org/wiki/Special:FilePath/Gir%20cattle.jpg?width=1200",
+  "https://commons.wikimedia.org/wiki/Special:FilePath/Dorper%20Sheep%20Breed%20Antigua%209187.jpg?width=1200",
+  "https://commons.wikimedia.org/wiki/Special:FilePath/Hampshire%20Down%20sheep%20J5.jpg?width=1200",
+  "https://commons.wikimedia.org/wiki/Special:FilePath/Merino%20Sheep.jpg?width=1200",
+  "https://commons.wikimedia.org/wiki/Special:FilePath/Romney%20sheep%20and%20lamb%20-%20geograph.org.uk%20-%206164208.jpg?width=1200",
+  "https://commons.wikimedia.org/wiki/Special:FilePath/Boer%20goat.jpg?width=1200",
+  "https://commons.wikimedia.org/wiki/Special:FilePath/Galla%20goat%20at%20kasarani.jpg?width=1000",
+  "https://commons.wikimedia.org/wiki/Special:FilePath/Alpine%20Goat.jpg?width=1200",
+  "https://commons.wikimedia.org/wiki/Special:FilePath/Toggenburger%20Goat.jpg?width=1200",
+  "https://commons.wikimedia.org/wiki/Special:FilePath/Saanen%20goat-04282.jpg?width=1200",
+  "https://commons.wikimedia.org/wiki/Special:FilePath/Kalahari%20Red%20Goat%2C%20April%202023.jpg?width=1200",
+  "https://commons.wikimedia.org/wiki/Special:FilePath/Lucerne%20%284656862796%29.jpg?width=1200",
+  "https://commons.wikimedia.org/wiki/Special:FilePath/Alfalfa%20field%20-%20geograph.org.uk%20-%204092964.jpg?width=1200",
+  "https://www.kenyanews.go.ke/wp-content/uploads/2022/11/SEEDS-1200x630.jpg?width=800"
 ];
 
 self.addEventListener('install',event=>{
@@ -50,7 +54,7 @@ self.addEventListener('fetch',event=>{
   const req=event.request;
   if(req.method!=='GET') return;
   const url=new URL(req.url);
-  const isImage=req.destination==='image' || /\.(?:jpg|jpeg|png|webp|avif)(?:\?|$)/i.test(url.pathname);
+  const isImage=req.destination==='image' || /\\.(?:jpg|jpeg|png|webp|avif)(?:\\?|$)/i.test(url.pathname);
   if(!isImage) return;
   event.respondWith(
     caches.open(CACHE_NAME).then(async cache=>{
