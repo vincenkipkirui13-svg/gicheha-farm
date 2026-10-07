@@ -1,6 +1,6 @@
-const CACHE_NAME='gicheha-images-v11';
+const CACHE_NAME='gicheha-images-v12';
 const IMAGE_URLS=[
-  "https://raw.githubusercontent.com/vincenkipkirui13-svg/delamere-farm/main/public/animal-photos/cattle/friesian-holstein/friesian-holstein-01.jfif",
+  "https://raw.githubusercontent.com/vincenkipkirui13-svg/delamere-farm/main/public/animal-photos/cattle/friesian-holstein/friesian-holstein-02.jfif",
   "https://raw.githubusercontent.com/vincenkipkirui13-svg/delamere-farm/main/public/animal-photos/cattle/ayrshire/ayrshire-01.jfif",
   "https://raw.githubusercontent.com/vincenkipkirui13-svg/delamere-farm/main/public/animal-photos/cattle/guernsey/guernsey-01.jfif",
   "https://www.realcaliforniamilk.jp/themes/cmab/assets/awsimages/brown_swiss.jpg",
@@ -23,36 +23,6 @@ const IMAGE_URLS=[
   "https://commons.wikimedia.org/wiki/Special:FilePath/Brebis%20lacaune.jpg?width=1200",
   "https://commons.wikimedia.org/wiki/Special:FilePath/Potatoe%20seeds.jpg?width=1400"
 ];
-
-self.addEventListener('install',event=>{
-  event.waitUntil(
-    caches.open(CACHE_NAME).then(async cache=>{
-      await Promise.allSettled(IMAGE_URLS.map(async url=>{
-        try{
-          const response=await fetch(url,{mode:'no-cors',cache:'no-cache'});
-          if(response.ok || response.type==='opaque') await cache.put(url,response.clone());
-        }catch(error){}
-      }));
-      return self.skipWaiting();
-    })
-  );
-});
-self.addEventListener('activate',event=>{
-  event.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(key=>key!==CACHE_NAME).map(key=>caches.delete(key)))).then(()=>self.clients.claim()));
-});
-self.addEventListener('fetch',event=>{
-  const req=event.request;
-  if(req.method!=='GET') return;
-  const url=new URL(req.url);
-  const isImage=req.destination==='image' || /\\.(?:jpg|jpeg|png|webp|avif|jfif)(?:\\?|$)/i.test(url.pathname);
-  if(!isImage) return;
-  event.respondWith(caches.open(CACHE_NAME).then(async cache=>{
-    const cached=await cache.match(req);
-    if(cached) return cached;
-    try{
-      const response=await fetch(req,{cache:'no-cache'});
-      if(response.ok || response.type==='opaque') await cache.put(req,response.clone());
-      return response;
-    }catch(error){return new Response('',{status:503,statusText:'Image unavailable'});}
-  }));
-});
+self.addEventListener('install',event=>{event.waitUntil(caches.open(CACHE_NAME).then(async cache=>{await Promise.allSettled(IMAGE_URLS.map(async url=>{try{const response=await fetch(url,{mode:'no-cors',cache:'no-cache'});if(response.ok||response.type==='opaque')await cache.put(url,response.clone())}catch(error){}}));return self.skipWaiting()}))});
+self.addEventListener('activate',event=>{event.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(key=>key!==CACHE_NAME).map(key=>caches.delete(key)))).then(()=>self.clients.claim()))});
+self.addEventListener('fetch',event=>{const req=event.request;if(req.method!=='GET')return;const url=new URL(req.url);const isImage=req.destination==='image'||/\\.(?:jpg|jpeg|png|webp|avif|jfif)(?:\\?|$)/i.test(url.pathname);if(!isImage)return;event.respondWith(caches.open(CACHE_NAME).then(async cache=>{const cached=await cache.match(req);if(cached)return cached;try{const response=await fetch(req,{cache:'no-cache'});if(response.ok||response.type==='opaque')await cache.put(req,response.clone());return response}catch(error){return new Response('',{status:503,statusText:'Image unavailable'})}}))});
