@@ -1,25 +1,25 @@
-const CACHE_NAME='gicheha-images-v10';
+const CACHE_NAME='gicheha-images-v11';
 const IMAGE_URLS=[
-  "https://commons.wikimedia.org/wiki/Special:FilePath/Holstein%20Friesian%20UK%20Yorkshire%20July%202011.jpg?width=1200",
-  "https://commons.wikimedia.org/wiki/Special:FilePath/Young%20Ayrshire%20cow%20%2852181577014%29.jpg?width=1200",
-  "https://commons.wikimedia.org/wiki/Special:FilePath/Guernsey%20Dairy%20Cow.jpg?width=1200",
+  "https://raw.githubusercontent.com/vincenkipkirui13-svg/delamere-farm/main/public/animal-photos/cattle/friesian-holstein/friesian-holstein-01.jfif",
+  "https://raw.githubusercontent.com/vincenkipkirui13-svg/delamere-farm/main/public/animal-photos/cattle/ayrshire/ayrshire-01.jfif",
+  "https://raw.githubusercontent.com/vincenkipkirui13-svg/delamere-farm/main/public/animal-photos/cattle/guernsey/guernsey-01.jfif",
   "https://www.realcaliforniamilk.jp/themes/cmab/assets/awsimages/brown_swiss.jpg",
-  "https://commons.wikimedia.org/wiki/Special:FilePath/Jersey%20cattle.jpg?width=1200",
-  "https://commons.wikimedia.org/wiki/Special:FilePath/Indian%20Sahiwal%20Bull.jpg?width=1200",
-  "https://commons.wikimedia.org/wiki/Special:FilePath/Boran%20bull%20at%20kasarani.jpg?width=1200",
-  "https://commons.wikimedia.org/wiki/Special:FilePath/Bezerros%20Girolando%20Pastando.jpg?width=1200",
-  "https://commons.wikimedia.org/wiki/Special:FilePath/Dorper%20Sheep%20Breed%20Antigua%209187.jpg?width=1200",
-  "https://commons.wikimedia.org/wiki/Special:FilePath/Hampshire%20Down%20sheep%20J5.jpg?width=1200",
+  "https://raw.githubusercontent.com/vincenkipkirui13-svg/delamere-farm/main/public/animal-photos/cattle/jersey/jersey-01.jfif",
+  "https://raw.githubusercontent.com/vincenkipkirui13-svg/delamere-farm/main/public/animal-photos/cattle/sahiwal/sahiwal-01.jfif",
+  "https://raw.githubusercontent.com/vincenkipkirui13-svg/delamere-farm/main/public/animal-photos/cattle/boran/boran-01.jfif",
+  "https://raw.githubusercontent.com/vincenkipkirui13-svg/delamere-farm/main/public/animal-photos/cattle/girolando/girolando-01.jfif",
+  "https://raw.githubusercontent.com/vincenkipkirui13-svg/delamere-farm/main/public/animal-photos/sheep/dorper/dorper-01.jfif",
+  "https://raw.githubusercontent.com/vincenkipkirui13-svg/delamere-farm/main/public/animal-photos/sheep/hampshire/hampshire-01.jfif",
   "https://cdn.shopify.com/s/files/1/0509/2871/3882/files/merinos_480x480.jpg?v=1634916864",
   "https://commons.wikimedia.org/wiki/Special:FilePath/Romney%20Marsh%20Sheep%20-%20geograph.org.uk%20-%203250278.jpg?width=1200",
-  "https://commons.wikimedia.org/wiki/Special:FilePath/Boer%20goat.jpg?width=1200",
+  "https://raw.githubusercontent.com/vincenkipkirui13-svg/delamere-farm/main/public/animal-photos/goats/boer/boer-01.jfif",
   "https://rastafarm.co.ke/images/gallabuck.jpg",
   "https://mountainduckeggs.com/cdn/shop/articles/IMG_8716.jpg?v=1756866909&width=1200",
   "https://commons.wikimedia.org/wiki/Special:FilePath/Toggenburger%20Goat.jpg?width=1200",
-  "https://commons.wikimedia.org/wiki/Special:FilePath/Brahman%20cattle%20in%20Costa%20Rica.jpg?width=1200",
-  "https://commons.wikimedia.org/wiki/Special:FilePath/Gir%20cattle.jpg?width=1200",
+  "https://raw.githubusercontent.com/vincenkipkirui13-svg/delamere-farm/main/public/animal-photos/cattle/brahman/brahman-01.jfif",
+  "https://raw.githubusercontent.com/vincenkipkirui13-svg/delamere-farm/main/public/animal-photos/other-cattle/gir/gir-01.jfif",
   "https://commons.wikimedia.org/wiki/Special:FilePath/Saanen%20goat-04282.jpg?width=1200",
-  "https://boerboksa.co.za/images/Gallery/Kalahari%20Red/Big/Kalahari06.jpg",
+  "https://raw.githubusercontent.com/vincenkipkirui13-svg/delamere-farm/main/public/animal-photos/goats/kalahari-red/kalahari-red-01.jfif",
   "https://commons.wikimedia.org/wiki/Special:FilePath/Brebis%20lacaune.jpg?width=1200",
   "https://commons.wikimedia.org/wiki/Special:FilePath/Potatoe%20seeds.jpg?width=1400"
 ];
@@ -44,7 +44,7 @@ self.addEventListener('fetch',event=>{
   const req=event.request;
   if(req.method!=='GET') return;
   const url=new URL(req.url);
-  const isImage=req.destination==='image' || /\\.(?:jpg|jpeg|png|webp|avif)(?:\\?|$)/i.test(url.pathname);
+  const isImage=req.destination==='image' || /\\.(?:jpg|jpeg|png|webp|avif|jfif)(?:\\?|$)/i.test(url.pathname);
   if(!isImage) return;
   event.respondWith(caches.open(CACHE_NAME).then(async cache=>{
     const cached=await cache.match(req);
