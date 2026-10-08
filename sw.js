@@ -1,4 +1,4 @@
-const CACHE_NAME='gicheha-images-v12';
+const CACHE_NAME='gicheha-images-v13';
 const IMAGE_URLS=[
   "https://raw.githubusercontent.com/vincenkipkirui13-svg/delamere-farm/main/public/animal-photos/cattle/friesian-holstein/friesian-holstein-02.jfif",
   "https://raw.githubusercontent.com/vincenkipkirui13-svg/delamere-farm/main/public/animal-photos/cattle/ayrshire/ayrshire-01.jfif",
