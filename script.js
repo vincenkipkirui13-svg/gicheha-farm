@@ -92,7 +92,7 @@ const galleryImages={
 ],
 "Galla Goats":[
 "https://rastafarm.co.ke/images/gallabuck.jpg",
-"https://static.wixstatic.com/media/b9a05c_872c0854b7af4bab8d92c406a05f4158~mv2.jpg/v1/fill/w_568%2Ch_580%2Cal_c%2Clg_1%2Cq_80%2Cenc_avif%2Cquality_auto/b9a05c_872c0854b7af4bab8d92f406a05f4158~mv2.jpg",
+"https://static.wixstatic.com/media/b9a05c_872c0854b7af4bab8d92c406a05f4158~mv2.jpg/v1/fill/w_568%2Ch_580%2Cal_c%2Clg_1%2Cq_80%2Cenc_avif%2Cquality_auto/b9a05c_872c0854b7af4bab8d92c406a05f4158~mv2.jpg",
 "https://nation.africa/resource/image/3683564/landscape_ratio3x2/1620/1080/4bc80cb31ca9abfbad1adf482284fda8/xh/animal-export-2.jpg",
 "https://www.mamamboga.go.ke/storage/customers/goat-400x400-3-800x800.jpg",
 "https://almashia.com/wp-content/uploads/2024/10/kenya-goats.jpg"
