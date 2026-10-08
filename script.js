@@ -70,7 +70,7 @@ const galleryImages={
 "https://commons.wikimedia.org/wiki/Special:FilePath/Hampshire%20Down%20sheep%20J1.jpg?width=1000"
 ],
 "Merino Sheep":[
-"https://cdn.shopify.com/s/files/1/0509/2871/3882/files/merinos_480x480.jpg?v=1634916864",
+"https://commons.wikimedia.org/wiki/Special:FilePath/Merino%20Sheep.jpg?width=1200",
 "https://commons.wikimedia.org/wiki/Special:FilePath/Merino%20Sheep.jpg?width=1000",
 "https://commons.wikimedia.org/wiki/Special:FilePath/Merino%20sheep.%20%2852908265984%29.jpg?width=1000",
 "https://commons.wikimedia.org/wiki/Special:FilePath/Merino%20sheep.%20%288096354999%29.jpg?width=1000",
@@ -98,7 +98,7 @@ const galleryImages={
 "https://almashia.com/wp-content/uploads/2024/10/kenya-goats.jpg"
 ],
 "Alpine Goats":[
-"https://mountainduckeggs.com/cdn/shop/articles/IMG_8716.jpg?v=1756866909&width=1200",
+"https://commons.wikimedia.org/wiki/Special:FilePath/Alpine%20Goat.jpg?width=1200",
 "https://commons.wikimedia.org/wiki/Special:FilePath/Alpine%20Goat.jpg?width=1000",
 "https://commons.wikimedia.org/wiki/Special:FilePath/Alpine%20SDA2011.JPG?width=1000",
 "https://commons.wikimedia.org/wiki/Special:FilePath/Chevres%20alpines%20au%20paturage%20en%20region%20Centre.jpg?width=1000",
