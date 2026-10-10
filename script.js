@@ -166,3 +166,35 @@ document.querySelectorAll('.animal-card').forEach(card=>{
     });
   });
 });
+
+/* Keep livestock category filters and the WhatsApp inquiry form working. */
+document.querySelectorAll('.filter').forEach(button=>{
+  button.addEventListener('click',()=>{
+    document.querySelectorAll('.filter').forEach(item=>item.classList.remove('active'));
+    button.classList.add('active');
+    const filter=button.dataset.filter;
+    document.querySelectorAll('.animal-card').forEach(card=>{
+      card.style.display=filter==='all'||card.dataset.type===filter?'block':'none';
+    });
+  });
+});
+
+const inquiryForm=document.getElementById('inquiry');
+if(inquiryForm){
+  inquiryForm.addEventListener('submit',event=>{
+    event.preventDefault();
+    const name=document.getElementById('name').value.trim();
+    const phone=document.getElementById('phone').value.trim();
+    const location=document.getElementById('location').value.trim();
+    const goods=document.getElementById('goods').value;
+    const details=document.getElementById('details').value.trim();
+    const message=encodeURIComponent(
+      'Hello Gicheha Farm.\nFull name: '+name+
+      '\nPhone: '+phone+
+      '\nLocation: '+location+
+      '\nType of goods/livestock: '+goods+
+      '\nAdditional details: '+(details||'None')
+    );
+    window.open('https://wa.me/254786113644?text='+message,'_blank','noopener');
+  });
+}
