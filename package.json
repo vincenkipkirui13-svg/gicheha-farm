@@ -2,8 +2,8 @@
   "name": "gicheha-farm-site",
   "version": "1.0.0",
   "private": true,
-  "description": "Gicheha Farm website with admin photo manager",
+  "description": "Gicheha Farm website with persistent photo management backed by Neon Postgres",
   "dependencies": {
-    "@vercel/blob": "^2.0.0"
+    "@neondatabase/serverless": "^1.0.1"
   }
 }
