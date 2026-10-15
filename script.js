@@ -177,29 +177,10 @@ const farmPhotoNotes = {
   "Dorper Sheep": "Black-headed, white-bodied Dorper-type sheep; exact breed not confirmed from the photograph alone.",
   "Boer Goats": "White-bodied, brown-headed Boer-type goats; exact breed not confirmed from the photograph alone."
 };
-const galleryImages = { ...stockGalleryImages, ...farmGalleryImages };
+let galleryImages = { ...stockGalleryImages, ...farmGalleryImages };
 
 
-document.querySelectorAll('.animal-card').forEach(card=>{
-  const title=card.querySelector('h3')?.textContent.trim();
-  const images=galleryImages[title];
-  const main=card.querySelector('.animal-main-photo');
-  const gallery=card.querySelector('.photo-gallery');
-  if(!main||!gallery||!images||!images.length)return;
-  main.dataset.galleryIndex="0";
-  main.src=images[0];
-  if(farmPhotoNotes[title]) main.alt=farmPhotoNotes[title];
-  gallery.innerHTML=images.slice(1).map((src,i)=>'<button type="button" class="gallery-thumb" data-src="'+src.replace(/"/g,'&quot;')+'" aria-label="View '+title+' photo '+(i+2)+'"><img src="'+src.replace(/"/g,'&quot;')+'" alt="'+(farmPhotoNotes[title] || title)+' additional photograph '+(i+2)+'" loading="lazy" decoding="async"></button>').join('');
-  gallery.querySelectorAll('.gallery-thumb').forEach(btn=>{
-    btn.addEventListener('click',()=>{
-      const old=main.src;
-      main.src=btn.dataset.src;
-      btn.dataset.src=old;
-      const img=btn.querySelector('img');
-      img.src=old;
-    });
-  });
-});
+function renderAnimalGalleries(){document.querySelectorAll('.animal-card').forEach(card=>{const title=card.querySelector('h3')?.textContent.trim(),images=galleryImages[title],main=card.querySelector('.animal-main-photo'),gallery=card.querySelector('.photo-gallery');if(!main||!gallery||!images||!images.length)return;main.dataset.galleryIndex="0";main.src=images[0];if(farmPhotoNotes[title])main.alt=farmPhotoNotes[title];gallery.innerHTML=images.slice(1).map((src,i)=>'<button type="button" class="gallery-thumb" data-src="'+src.replace(/"/g,'&quot;')+'" aria-label="View '+title+' photo '+(i+2)+'"><img src="'+src.replace(/"/g,'&quot;')+'" alt="'+(farmPhotoNotes[title]||title)+' additional photograph '+(i+2)+'" loading="lazy" decoding="async"></button>').join('');gallery.querySelectorAll('.gallery-thumb').forEach(btn=>btn.addEventListener('click',()=>{const old=main.src;main.src=btn.dataset.src;btn.dataset.src=old;btn.querySelector('img').src=old}))})}renderAnimalGalleries();fetch('/api/photos').then(r=>r.ok?r.json():null).then(d=>{if(d&&d.photos){galleryImages={...galleryImages,...d.photos};renderAnimalGalleries()}}).catch(()=>{});
 
 /* Keep livestock category filters and the WhatsApp inquiry form working. */
 document.querySelectorAll('.filter').forEach(button=>{

@@ -1,0 +1,9 @@
+{
+  "name": "gicheha-farm-site",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Gicheha Farm website with admin photo manager",
+  "dependencies": {
+    "@vercel/blob": "^2.0.0"
+  }
+}
