@@ -53,7 +53,7 @@
             <div class="main-photo"><div class="preview-wrap"><span id="mainBadge" class="main-badge hidden">MAIN PHOTO</span><img id="preview" alt="" class="hidden"><div id="previewEmpty" class="preview-empty"><b>No main photo yet</b>Add photos below to build this livestock gallery.</div></div><div class="preview-side"><span class="mini-label">Selected group</span><div class="big" id="mainTitle">No group selected</div><p class="note">Use “Make main” on any thumbnail to feature it first. The main image and thumbnail order are saved together.</p><button id="makeFirst" class="secondary" type="button" disabled>Keep first photo as main</button><button id="removeAll" class="quiet" type="button" disabled>Clear this gallery</button></div></div>
           </div>
           <div id="upload-panel"><div class="section-title"><div><h2>Add or replace photos</h2><p>Select up to five clear, high-resolution images in one batch.</p></div></div>
-            <div class="dropzone"><div class="drop-top"><div class="upload-icon">＋</div><div><strong>Build a better livestock gallery</strong><p>JPG, PNG, WebP or AVIF · maximum 3 MB per photo. For best results, use clear original photos with the animal fully visible.</p></div></div><input id="files" class="file-input" type="file" accept="image/jpeg,image/png,image/webp,image/avif" multiple><div class="upload-controls"><select id="uploadMode" aria-label="Upload mode"><option value="replace">Replace all photos in this group</option><option value="append">Add to existing photos</option></select><button id="upload" class="primary" type="button">Upload selected photos</button></div><p id="selectedCount" class="small" style="margin-top:10px">No files selected</p></div>
+            <div class="dropzone"><div class="drop-top"><div class="upload-icon">＋</div><div><strong>Build a better livestock gallery</strong><p>JPG, PNG, WebP or AVIF · maximum 3 MB per photo. For best results, use clear original photos with the animal fully visible.</p></div></div><input id="files" class="file-input" type="file" accept="image/jpeg,image/png,image/webp,image/avif" multiple><div class="upload-controls"><select id="uploadMode" aria-label="Upload mode"><option value="replace">Replace all photos in this group</option><option value="append">Add to existing photos</option></select><button id="upload" class="primary" type="button">Upload selected photos</button></div><div style="display:flex;align-items:flex-start;justify-content:space-between;gap:10px;margin-top:10px"><p id="selectedCount" class="small" style="overflow-wrap:anywhere">No files selected</p><button id="clearSelection" class="quiet" type="button" style="padding:6px 9px;font-size:11px;flex-shrink:0">Clear selection</button></div></div>
           </div>
           <div><div class="section-title"><div><h2>Gallery thumbnails</h2><p>Reorder by making a photo main, replace an individual photo, or remove it.</p></div><span class="count" id="thumbCount">0 photos</span></div><div id="grid" class="gallery-grid"></div></div>
           <div class="savebar"><div><p id="saveMessage">No unpublished changes.</p><p class="small">Publishing updates the saved livestock galleries on your website.</p></div><div class="save-actions"><button id="reload" class="secondary" type="button">Reload saved</button><button id="save" class="primary" type="button">Publish changes ↗</button></div></div>
@@ -64,7 +64,7 @@
 </div>
 <script>
 const $=id=>document.getElementById(id);
-let photos={},savedPhotos={},breeds=[],activeBreed='',dirty=false,busy=false;
+let photos={},savedPhotos={},breeds=[],activeBreed='',dirty=false,busy=false,selectedFiles=[];
 function message(el,text,error){el.textContent=text;el.classList.remove('hidden','error');if(error)el.classList.add('error');else el.classList.remove('error')}
 function hide(el){el.classList.add('hidden')}
 function clone(value){return JSON.parse(JSON.stringify(value))}
@@ -150,10 +150,11 @@ $('loginForm').addEventListener('submit',async event=>{
   finally{button.disabled=false;button.textContent='Open photo manager →'}
 });
 $('breedSearch').addEventListener('input',renderBreedList);
-$('files').addEventListener('change',()=>{const count=$('files').files.length;$('selectedCount').textContent=count?count+' photo'+(count===1?'':'s')+' selected':'No files selected';if(count>5)message($('status'),'Choose no more than five photos in one batch.',true);else hide($('status'))});
+$('files').addEventListener('change',()=>{const incoming=Array.from($('files').files);if(!incoming.length)return;const merged=[...selectedFiles];for(const file of incoming){if(!merged.some(old=>old.name===file.name&&old.size===file.size&&old.lastModified===file.lastModified))merged.push(file)}const tooMany=merged.length>5;selectedFiles=merged.slice(0,5);$('files').value='';$('selectedCount').textContent=selectedFiles.length?selectedFiles.length+' photo'+(selectedFiles.length===1?'':'s')+' queued: '+selectedFiles.map(file=>file.name).join(', '):'No files selected';if(tooMany)message($('status'),'You can upload up to five photos per batch. The first five are queued; clear the selection to start again.',true);else hide($('status'))});
+$('clearSelection').addEventListener('click',()=>{selectedFiles=[];$('files').value='';$('selectedCount').textContent='No files selected';hide($('status'))});
 $('upload').addEventListener('click',async()=>{
   if(busy)return;if(!activeBreed)return message($('status'),'Choose a livestock group first.',true);
-  const files=Array.from($('files').files),breed=activeBreed;
+  const files=[...selectedFiles],breed=activeBreed;
   if(!files.length)return message($('status'),'Choose 3–5 photos, or select fewer if that is all you need.',true);
   if(files.length>5)return message($('status'),'Choose no more than five photos at once.',true);
   const mode=$('uploadMode').value,current=photos[breed]||[];
@@ -162,7 +163,7 @@ $('upload').addEventListener('click',async()=>{
   try{
     const urls=[];for(let i=0;i<files.length;i++){$('upload').textContent='Uploading '+(i+1)+'/'+files.length+'…';urls.push(await uploadOne(files[i]))}
     photos[breed]=mode==='append'?current.concat(urls):urls;
-    $('files').value='';$('selectedCount').textContent='Upload complete';$('uploadMode').value='replace';paint();renderBreedList();markDirty();
+    selectedFiles=[];$('files').value='';$('selectedCount').textContent='Upload complete';$('uploadMode').value='replace';paint();renderBreedList();markDirty();
     message($('status'),files.length+' photo'+(files.length===1?'':'s')+' uploaded to '+breed+'. Publish changes to update the website.')
   }catch(error){message($('status'),error.message,true)}
   finally{busy=false;$('upload').disabled=false;$('upload').textContent='Upload selected photos'}
