@@ -1,4 +1,4 @@
-const galleryImages={
+const stockGalleryImages={
 "Friesian Cows":[
 "https://raw.githubusercontent.com/vincenkipkirui13-svg/delamere-farm/main/public/animal-photos/cattle/friesian-holstein/friesian-holstein-02.jfif",
 "https://raw.githubusercontent.com/vincenkipkirui13-svg/delamere-farm/main/public/animal-photos/cattle/friesian-holstein/friesian-holstein-01.jfif",
@@ -148,14 +148,48 @@ const galleryImages={
 ]
 };
 
+const farmGalleryImages = {
+  "Friesian Cows": [
+    "/IMG-20260921-WA0003.jpg",
+    "/IMG-20261010-WA0002.jpg",
+    "/IMG-20261014-WA0015.jpg",
+    "/IMG-20261014-WA0026.jpg",
+    "/IMG-20261014-WA0028.jpg",
+    "/IMG-20261014-WA0030.jpg",
+    "/IMG-20261014-WA0032.jpg"
+  ],
+  "Brahman Cattle": [
+    "/IMG-20260921-WA0035.jpg"
+  ],
+  "Dorper Sheep": [
+    "/IMG-20261014-WA0007.jpg"
+  ],
+  "Boer Goats": [
+    "/IMG-20260921-WA0062.jpg",
+    "/IMG-20260921-WA0063.jpg",
+    "/IMG-20260921-WA0064.jpg",
+    "/IMG-20261014-WA0005.jpg"
+  ]
+};
+const farmPhotoNotes = {
+  "Friesian Cows": "Black-and-white Holstein-Friesian-type dairy cattle; visual match, pedigree not independently verified.",
+  "Brahman Cattle": "Red humped cattle with Brahman-type appearance; exact breed not confirmed from the photograph alone.",
+  "Dorper Sheep": "Black-headed, white-bodied Dorper-type sheep; exact breed not confirmed from the photograph alone.",
+  "Boer Goats": "White-bodied, brown-headed Boer-type goats; exact breed not confirmed from the photograph alone."
+};
+const galleryImages = { ...stockGalleryImages, ...farmGalleryImages };
+
+
 document.querySelectorAll('.animal-card').forEach(card=>{
   const title=card.querySelector('h3')?.textContent.trim();
   const images=galleryImages[title];
   const main=card.querySelector('.animal-main-photo');
   const gallery=card.querySelector('.photo-gallery');
-  if(!main||!gallery||!images||images.length!==5)return;
+  if(!main||!gallery||!images||!images.length)return;
   main.dataset.galleryIndex="0";
-  gallery.innerHTML=images.slice(1).map((src,i)=>'<button type="button" class="gallery-thumb" data-src="'+src.replace(/"/g,'&quot;')+'" aria-label="View '+title+' photo '+(i+2)+'"><img src="'+src.replace(/"/g,'&quot;')+'" alt="'+title+' additional photograph '+(i+2)+'" loading="lazy" decoding="async"></button>').join('');
+  main.src=images[0];
+  if(farmPhotoNotes[title]) main.alt=farmPhotoNotes[title];
+  gallery.innerHTML=images.slice(1).map((src,i)=>'<button type="button" class="gallery-thumb" data-src="'+src.replace(/"/g,'&quot;')+'" aria-label="View '+title+' photo '+(i+2)+'"><img src="'+src.replace(/"/g,'&quot;')+'" alt="'+(farmPhotoNotes[title] || title)+' additional photograph '+(i+2)+'" loading="lazy" decoding="async"></button>').join('');
   gallery.querySelectorAll('.gallery-thumb').forEach(btn=>{
     btn.addEventListener('click',()=>{
       const old=main.src;
