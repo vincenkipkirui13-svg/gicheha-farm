@@ -241,13 +241,13 @@ function applyFarmContactSettings(settings){
  while(walker.nextNode()){
    const n=walker.currentNode;
    if(!n.parentElement||/^(SCRIPT|STYLE|NOSCRIPT)$/.test(n.parentElement.tagName))continue;
-   if(/0786\s?113\s?644|254786113644/.test(n.nodeValue))nodes.push(n);
+   if(n.parentElement.closest('a[href^="tel:"]')||/0786\s?113\s?644|254786113644/.test(n.nodeValue))nodes.push(n);
  }
  const shown=phoneForDisplay(farmContactSettings.callNumber);
  nodes.forEach(n=>{
    const link=n.parentElement.closest('a[href^="tel:"]');
-   if(link)n.nodeValue=n.nodeValue.replace(/(?:\\+?\\d[\\d\\s()-]{6,}\\d)/,shown);
-   else n.nodeValue=n.nodeValue.replace(/0786\\s?113\\s?644/g,shown).replace(/254786113644/g,shown);
+   if(link)n.nodeValue=n.nodeValue.replace(/(?:\+?\d[\d\s()-]{6,}\d)/,shown);
+   else n.nodeValue=n.nodeValue.replace(/0786\s?113\s?644/g,shown).replace(/254786113644/g,shown);
  });
 }
 fetch('/api/settings',{cache:'no-store'}).then(r=>r.ok?r.json():null).then(d=>{
