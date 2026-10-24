@@ -210,6 +210,44 @@ if(inquiryForm){
       '\nType of goods/livestock: '+goods+
       '\nAdditional details: '+(details||'None')
     );
-    window.open('https://wa.me/254786113644?text='+message,'_blank','noopener');
+    let wa=digitsOnly(farmContactSettings.whatsappNumber);if(wa.startsWith('0'))wa='254'+wa.slice(1);window.open('https://wa.me/'+wa+'?text='+message,'_blank','noopener');
   });
 }
+
+
+/* Public contact links are controlled from the administrator settings. */
+let farmContactSettings={callNumber:'0786113644',whatsappNumber:'254786113644'};
+function digitsOnly(value){return String(value||'').replace(/[^0-9]/g,'')}
+function phoneForDisplay(value){
+ const n=digitsOnly(value);
+ if(n.length===10&&n.startsWith('0'))return n.slice(0,4)+' '+n.slice(4,7)+' '+n.slice(7);
+ if(n.length===12&&n.startsWith('254'))return '+254 '+n.slice(3,6)+' '+n.slice(6,9)+' '+n.slice(9);
+ return value;
+}
+function applyFarmContactSettings(settings){
+ farmContactSettings={...farmContactSettings,...settings};
+ const rawCall=String(farmContactSettings.callNumber).trim();
+ const callHref=(rawCall.startsWith('+')?'+':'')+digitsOnly(rawCall);
+ let waDigits=digitsOnly(farmContactSettings.whatsappNumber);
+ if(waDigits.startsWith('0'))waDigits='254'+waDigits.slice(1);
+ document.querySelectorAll('a[href^="tel:"]').forEach(a=>{a.href='tel:'+callHref});
+ document.querySelectorAll('a[href*="wa.me/"]').forEach(a=>{
+   const u=new URL(a.href,window.location.href);
+   u.pathname='/'+waDigits;
+   a.href=u.href;
+ });
+ const walker=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT);
+ const nodes=[];
+ while(walker.nextNode()){
+   const n=walker.currentNode;
+   if(!n.parentElement||/^(SCRIPT|STYLE|NOSCRIPT)$/.test(n.parentElement.tagName))continue;
+   if(/0786\s?113\s?644|254786113644/.test(n.nodeValue))nodes.push(n);
+ }
+ const shown=phoneForDisplay(farmContactSettings.callNumber);
+ nodes.forEach(n=>{
+   n.nodeValue=n.nodeValue.replace(/0786\s?113\s?644/g,shown).replace(/254786113644/g,shown);
+ });
+}
+fetch('/api/settings',{cache:'no-store'}).then(r=>r.ok?r.json():null).then(d=>{
+ if(d&&d.settings)applyFarmContactSettings(d.settings);
+}).catch(()=>{});
