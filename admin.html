@@ -182,5 +182,6 @@ $('save').addEventListener('click',async()=>{
 $('logout').addEventListener('click',async()=>{try{await api('logout',{method:'POST',body:'{}'})}catch(e){}photos={};savedPhotos={};dirty=false;$('appView').classList.add('hidden');$('loginView').classList.remove('hidden');$('password').value='';hide($('loginStatus'))});
 api('session').then(load).catch(()=>{});
 </script>
+<script src="/admin-contact.js" defer></script>
 </body>
 </html>
