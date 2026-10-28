@@ -17,3 +17,10 @@ footer{background:#0d2d1a;color:#dce8df;padding:34px 0 0}footer h3{margin:0 0 8p
 
 /* Main card photos: fill the card width while preserving each original image's full frame and natural proportions. */
 .animal-main-photo{display:block!important;width:100%!important;height:auto!important;max-height:none!important;object-fit:initial!important;object-position:initial!important;padding:0!important;}
+
+/* Final image-fit correction: hero background fills its entire section; livestock photos keep their complete original frame without distortion. */
+.hero{background-size:cover!important;background-repeat:no-repeat!important;background-position:center center!important;min-height:600px}
+.animal-image{width:100%;height:auto!important;overflow:hidden;display:block}
+.animal-main-photo{display:block!important;width:100%!important;max-width:100%!important;height:auto!important;min-height:0!important;max-height:none!important;aspect-ratio:auto!important;object-fit:contain!important;object-position:center!important;transform:none!important;padding:0!important}
+@media(max-width:760px){.hero{min-height:520px;background-size:cover!important;background-position:center center!important}.animal-main-photo{height:auto!important}}
+@media(max-width:430px){.animal-main-photo{height:auto!important}}
