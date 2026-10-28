@@ -14,3 +14,6 @@ footer{background:#0d2d1a;color:#dce8df;padding:34px 0 0}footer h3{margin:0 0 8p
 
 /* Keep the photo-admin entry reachable in compact mobile navigation. */
 .admin-nav-link{display:inline-flex;align-items:center;justify-content:center;background:#176b3a;color:#fff!important;border-radius:7px;padding:7px 10px;font-weight:800!important;white-space:nowrap}.admin-nav-link:hover{background:#0f4d2b;color:#fff!important}@media(max-width:760px){.nav-wrap nav{max-width:calc(100vw - 155px);overflow-x:auto;white-space:nowrap;scrollbar-width:thin}.nav-wrap nav a{flex-shrink:0}.admin-nav-link{padding:7px 9px}}
+
+/* Main card photos: fill the card width while preserving each original image's full frame and natural proportions. */
+.animal-main-photo{display:block!important;width:100%!important;height:auto!important;max-height:none!important;object-fit:initial!important;object-position:initial!important;padding:0!important;}
