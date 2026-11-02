@@ -180,7 +180,47 @@ const farmPhotoNotes = {
 let galleryImages = { ...stockGalleryImages, ...farmGalleryImages };
 
 
-function renderAnimalGalleries(){document.querySelectorAll('.animal-card').forEach(card=>{const title=card.querySelector('h3')?.textContent.trim(),images=galleryImages[title],main=card.querySelector('.animal-main-photo'),gallery=card.querySelector('.photo-gallery');if(!main||!gallery||!images||!images.length)return;main.dataset.galleryIndex="0";main.src=images[0];if(farmPhotoNotes[title])main.alt=farmPhotoNotes[title];gallery.innerHTML=images.slice(1).map((src,i)=>'<button type="button" class="gallery-thumb" data-src="'+src.replace(/"/g,'&quot;')+'" aria-label="View '+title+' photo '+(i+2)+'"><img src="'+src.replace(/"/g,'&quot;')+'" alt="'+(farmPhotoNotes[title]||title)+' additional photograph '+(i+2)+'" loading="lazy" decoding="async"></button>').join('');gallery.querySelectorAll('.gallery-thumb').forEach(btn=>btn.addEventListener('click',()=>{const old=main.src;main.src=btn.dataset.src;btn.dataset.src=old;btn.querySelector('img').src=old}))})}renderAnimalGalleries();fetch('/api/photos').then(r=>r.ok?r.json():null).then(d=>{if(d&&d.photos){galleryImages={...galleryImages,...d.photos};renderAnimalGalleries()}}).catch(()=>{});
+function renderAnimalGalleries(){document.querySelectorAll('.animal-card').forEach(card=>{const title=card.querySelector('h3')?.textContent.trim(),images=galleryImages[title],main=card.querySelector('.animal-main-photo'),gallery=card.querySelector('.photo-gallery');if(!main||!gallery||!images||!images.length)return;main.dataset.galleryIndex="0";main.src=images[0];if(farmPhotoNotes[title])main.alt=farmPhotoNotes[title];gallery.innerHTML=images.slice(1).map((src,i)=>'<button type="button" class="gallery-thumb" data-src="'+src.replace(/"/g,'&quot;')+'" aria-label="View '+title+' photo '+(i+2)+'"><img src="'+src.replace(/"/g,'&quot;')+'" alt="'+(farmPhotoNotes[title]||title)+' additional photograph '+(i+2)+'" loading="lazy" decoding="async"></button>').join('');gallery.querySelectorAll('.gallery-thumb').forEach(btn=>btn.addEventListener('click',()=>{const old=main.src;main.src=btn.dataset.src;btn.dataset.src=old;btn.querySelector('img').src=old}))})}renderAnimalGalleries();async function syncManagedLivestock(){
+ try{
+  const response=await fetch('/api/photos',{cache:'no-store'});
+  if(!response.ok)return;
+  const data=await response.json();
+  if(!data||!data.photos)return;
+  galleryImages=data.photos;
+  const grid=document.querySelector('.livestock-grid');
+  if(!grid)return;
+  const groups=Object.keys(data.photos);
+  grid.querySelectorAll('.animal-card').forEach(card=>{
+   const title=card.querySelector('h3')?.textContent.trim();
+   if(title&&!Object.prototype.hasOwnProperty.call(data.photos,title))card.remove();
+  });
+  groups.forEach(name=>{
+   if(grid.querySelectorAll('.animal-card h3').length&&Array.from(grid.querySelectorAll('.animal-card h3')).some(h=>h.textContent.trim()===name))return;
+   const lower=name.toLowerCase();
+   const type=lower.includes('goat')?'goats':lower.includes('sheep')?'sheep':'cattle';
+   const card=document.createElement('article');card.className='animal-card';card.dataset.type=type;
+   const imageWrap=document.createElement('div');imageWrap.className='animal-image';
+   const img=document.createElement('img');img.className='centered-photo animal-main-photo';img.alt=name+' livestock';img.loading='lazy';img.decoding='async';
+   const urls=Array.isArray(data.photos[name])?data.photos[name]:[];
+   img.src=urls[0]||'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22640%22 height=%22480%22 viewBox=%220 0 640 480%22%3E%3Crect width=%22640%22 height=%22480%22 fill=%22%23edf1e8%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 dominant-baseline=%22middle%22 text-anchor=%22middle%22 fill=%22%23677967%22 font-size=%2224%22%3EAdd livestock photos%3C/text%3E%3C/svg%3E';
+   const gallery=document.createElement('div');gallery.className='photo-gallery';gallery.setAttribute('aria-label','More photos');imageWrap.append(img,gallery);
+   const body=document.createElement('div');body.className='animal-body';
+   const tag=document.createElement('span');tag.className='tag';tag.textContent=type;
+   const title=document.createElement('h3');title.textContent=name;
+   const description=document.createElement('p');description.textContent='Contact Gicheha Farm for details and availability.';
+   const price=document.createElement('strong');price.textContent='Contact for current price';
+   const link=document.createElement('a');link.className='small-whatsapp';link.href='https://wa.me/254786113644?text='+encodeURIComponent("Hello Gicheha Farm, I'm interested in "+name);link.target='_blank';link.rel='noopener';link.textContent='Inquire';
+   body.append(tag,title,description,price,link);card.append(imageWrap,body);grid.append(card);
+  });
+  renderAnimalGalleries();
+  document.querySelectorAll('.filter').forEach(button=>{button.onclick=()=>{
+   document.querySelectorAll('.filter').forEach(item=>item.classList.remove('active'));
+   button.classList.add('active');const filter=button.dataset.filter;
+   document.querySelectorAll('.animal-card').forEach(card=>{card.style.display=filter==='all'||card.dataset.type===filter?'block':'none'});
+  }});
+ }catch(error){console.warn('Could not refresh livestock groups:',error)}
+}
+syncManagedLivestock();
 
 /* Keep livestock category filters and the WhatsApp inquiry form working. */
 document.querySelectorAll('.filter').forEach(button=>{
