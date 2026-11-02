@@ -17,7 +17,6 @@ footer{background:#0d2d1a;color:#dce8df;padding:34px 0 0}footer h3{margin:0 0 8p
 
 /* Main card photos: fill the card width while preserving each original image's full frame and natural proportions. */
 /* Consistent photo layout: no fixed-height livestock images, no forced crop or stretch. */
-.hero{background-image:url("https://commons.wikimedia.org/wiki/Special:FilePath/Holstein%20Friesian%20UK%20Yorkshire%20July%202011.jpg?width=1600");background-size:cover;background-repeat:no-repeat;background-position:center center;min-height:600px}
 .animal-image{width:100%;height:auto;overflow:hidden;display:block}
 .animal-main-photo{display:block;width:100%;max-width:100%;height:auto!important;min-height:0;max-height:none;aspect-ratio:auto;object-fit:contain!important;object-position:center;padding:0;transform:none}
-@media(max-width:760px){.hero{min-height:520px;background-size:cover;background-position:center center}.animal-main-photo{height:auto!important}}
+@media(max-width:760px){.animal-main-photo{height:auto!important}}
