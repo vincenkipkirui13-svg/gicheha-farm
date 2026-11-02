@@ -20,3 +20,6 @@ footer{background:#0d2d1a;color:#dce8df;padding:34px 0 0}footer h3{margin:0 0 8p
 .animal-image{width:100%;height:auto;overflow:hidden;display:block}
 .animal-main-photo{display:block;width:100%;max-width:100%;height:auto!important;min-height:0;max-height:none;aspect-ratio:auto;object-fit:contain!important;object-position:center;padding:0;transform:none}
 @media(max-width:760px){.animal-main-photo{height:auto!important}}
+
+/* Reference catalogue: keep filters usable on narrow screens and clarify the product price notes. */
+.filters{flex-wrap:wrap}.product-note{font-size:.88rem;line-height:1.6;color:var(--muted);margin:10px 0 16px}.products div{align-items:flex-start}.products span{line-height:1.45}.products b{text-align:right}
