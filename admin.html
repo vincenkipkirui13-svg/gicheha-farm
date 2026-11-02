@@ -43,7 +43,8 @@
       <div class="stats"><div class="stat"><strong id="breedCount">—</strong><span>Livestock groups</span></div><div class="stat"><strong id="photoCount">—</strong><span>Photos in library</span></div><div class="stat"><strong id="changedCount">0</strong><span>Pending changes</span></div></div>
       <div class="layout">
         <aside class="panel sidebar">
-          <div class="panel-head"><div><h2>Livestock groups</h2><p>Choose which gallery to edit.</p></div><span class="count" id="groupCount">— groups</span></div>
+          <div class="panel-head"><div><h2>Livestock groups</h2><p>Add new groups or remove groups you no longer offer.</p></div><span class="count" id="groupCount">— groups</span></div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px"><button id="addGroup" class="primary" type="button">＋ Add group</button><button id="deleteGroup" class="danger" type="button" disabled>Delete group</button></div>
           <input id="breedSearch" class="search" type="search" placeholder="⌕  Search livestock…" aria-label="Search livestock groups">
           <div id="breedList" class="breed-list"></div>
         </aside>
@@ -99,6 +100,7 @@ function markDirty(){
   updateStats()
 }
 function renderBreedList(){
+  $('deleteGroup').disabled=!activeBreed;
   const query=$('breedSearch').value.trim().toLowerCase();$('breedList').innerHTML='';
   breeds.filter(b=>b.toLowerCase().includes(query)).forEach(b=>{
     const btn=document.createElement('button');btn.type='button';btn.className='breed-choice'+(b===activeBreed?' active':'');
@@ -149,6 +151,28 @@ $('loginForm').addEventListener('submit',async event=>{
   try{await api('login',{method:'POST',body:JSON.stringify({username:$('username').value.trim(),password:$('password').value})});$('password').value='';await load()}
   catch(error){message($('loginStatus'),error.message,true)}
   finally{button.disabled=false;button.textContent='Open photo manager →'}
+});
+$('addGroup').addEventListener('click',()=>{
+  const name=prompt('Enter the livestock group name (for example, Saanen Goats):');
+  if(name===null)return;
+  const clean=name.trim().replace(/\\s+/g,' ');
+  if(!clean)return message($('status'),'Enter a name for the livestock group.',true);
+  if(clean.length>60)return message($('status'),'Group names must be 60 characters or fewer.',true);
+  if(breeds.some(b=>b.toLowerCase()===clean.toLowerCase()))return message($('status'),'That livestock group already exists.',true);
+  if(dirty&&!confirm('You have unpublished changes. Add this group and keep those changes pending?'))return;
+  photos[clean]=[];breeds.push(clean);activeBreed=clean;
+  $('currentBreed').textContent=clean;$('mainTitle').textContent=clean;
+  renderBreedList();paint();markDirty();message($('status'),clean+' added. Add photos, then publish your changes.');
+});
+$('deleteGroup').addEventListener('click',()=>{
+  if(!activeBreed)return;
+  const name=activeBreed;
+  if(!confirm('Delete the "'+name+'" livestock group and all its gallery photos? This will only affect the live website after you publish.'))return;
+  delete photos[name];breeds=breeds.filter(b=>b!==name);activeBreed=breeds[0]||'';
+  $('currentBreed').textContent=activeBreed||'No livestock group selected';$('mainTitle').textContent=activeBreed||'No group selected';
+  $('galleryHint').textContent=activeBreed?'Choose a group to preview and edit its photos.':'Add a livestock group to get started.';
+  renderBreedList();if(activeBreed)paint();else{ $('grid').innerHTML='<div class="empty"><b>No livestock groups yet</b>Add a group to begin.</div>';$('preview').classList.add('hidden');$('previewEmpty').classList.remove('hidden');$('mainBadge').classList.add('hidden');$('total').textContent='0 / 5 photos';$('thumbCount').textContent='0 photos';$('makeFirst').disabled=true;$('removeAll').disabled=true;updateStats()}
+  markDirty();message($('status'),name+' deleted from the draft. Publish changes to remove it from the website.');
 });
 $('breedSearch').addEventListener('input',renderBreedList);
 $('files').addEventListener('change',()=>{const incoming=Array.from($('files').files);if(!incoming.length)return;const merged=[...selectedFiles];for(const file of incoming){if(!merged.some(old=>old.name===file.name&&old.size===file.size&&old.lastModified===file.lastModified))merged.push(file)}const tooMany=merged.length>5;selectedFiles=merged.slice(0,5);$('files').value='';$('selectedCount').textContent=selectedFiles.length?selectedFiles.length+' photo'+(selectedFiles.length===1?'':'s')+' queued: '+selectedFiles.map(file=>file.name).join(', '):'No files selected';if(tooMany)message($('status'),'You can upload up to five photos per batch. The first five are queued; clear the selection to start again.',true);else hide($('status'))});
