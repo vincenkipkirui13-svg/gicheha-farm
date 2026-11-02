@@ -31,7 +31,18 @@ module.exports=async(req,res)=>{
     const q=database();
     await q`CREATE TABLE IF NOT EXISTS gicheha_farm_gallery (id TEXT PRIMARY KEY, photos JSONB NOT NULL, updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW())`;
     const rows=await q`SELECT photos FROM gicheha_farm_gallery WHERE id='main' LIMIT 1`;
-    return res.end(JSON.stringify({photos:validateGallery(rows.length?rows[0].photos:defaults)}));
+    if(!rows.length)return res.end(JSON.stringify({photos:defaults}));
+    const current=validateGallery(rows[0].photos);
+    const legacyOnly=["Friesian Cows","Ayrshire Cows","Guernsey Cows","Brown Swiss Cows","Sahiwal Cattle","Boran Cattle","Merino Sheep","Romney Sheep","Galla Goats","Alpine Goats","Toggenburg Goats","Brahman Cattle","Gir Cattle","Saanen Goats","Kalahari Red Goats","Lacaune Sheep"];
+    if(Object.keys(current).some(name=>legacyOnly.includes(name))){
+      const migrated={...defaults};
+      for(const name of Object.keys(migrated))if(Array.isArray(current[name]))migrated[name]=current[name].slice(0,5);
+      const combined=[...(current['Boran Cattle']||[]),...(current['Sahiwal Cattle']||[])];
+      if(combined.length)migrated['Boran & Sahiwal Cattle']=[...new Set(combined)].slice(0,5);
+      await q`UPDATE gicheha_farm_gallery SET photos=${JSON.stringify(migrated)}::jsonb,updated_at=NOW() WHERE id='main'`;
+      return res.end(JSON.stringify({photos:migrated}));
+    }
+    return res.end(JSON.stringify({photos:current}));
   }catch(error){
     console.error('Gallery read failed:',error);
     return res.end(JSON.stringify({photos:defaults}));
