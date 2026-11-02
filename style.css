@@ -23,3 +23,21 @@ footer{background:#0d2d1a;color:#dce8df;padding:34px 0 0}footer h3{margin:0 0 8p
 
 /* Reference catalogue: keep filters usable on narrow screens and clarify the product price notes. */
 .filters{flex-wrap:wrap}.product-note{font-size:.88rem;line-height:1.6;color:var(--muted);margin:10px 0 16px}.products div{align-items:flex-start}.products span{line-height:1.45}.products b{text-align:right}
+
+
+/* Farm products price table — aligned with the Kalro Farm catalogue layout. */
+.feed-table-wrap{max-width:960px}
+.feed-table-heading{margin-bottom:24px}
+.feed-table-heading h2{font-size:clamp(1.8rem,3.5vw,2.5rem);line-height:1.2;margin:8px 0 10px;color:var(--deep)}
+.feed-table-heading p{margin:0;color:var(--muted)}
+.feed-table-scroll{width:100%;overflow-x:auto;border:1px solid var(--border);border-radius:10px;background:#fff;-webkit-overflow-scrolling:touch}
+.feed-price-table{width:100%;min-width:420px;border-collapse:collapse;text-align:left}
+.feed-price-table th{background:#176b3a;color:#fff;padding:14px 18px;font-size:.9rem;font-weight:800}
+.feed-price-table th:last-child,.feed-price-table td:last-child{text-align:right;white-space:nowrap}
+.feed-price-table td{padding:12px 18px;border-bottom:1px solid var(--border);font-size:.92rem;line-height:1.45}
+.feed-price-table tbody tr:last-child td{border-bottom:0}
+.feed-price-table tbody tr:nth-child(even){background:#f5f8f4}
+.feed-price-table td:last-child{font-weight:800;color:var(--deep)}
+.feed-table-note{font-size:.88rem;line-height:1.6;color:var(--muted);margin:16px 0}
+.feed-table-inquire{margin-top:8px}
+@media(max-width:600px){.supplies{padding:55px 0}.feed-table-heading h2{font-size:1.8rem}.feed-price-table th,.feed-price-table td{padding:11px 12px;font-size:.84rem}.feed-table-note{font-size:.82rem}}
