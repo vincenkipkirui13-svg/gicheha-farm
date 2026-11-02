@@ -5,6 +5,9 @@ const DEFAULT_PRODUCTS=[{"id":"turkey","name":"Turkey","category":"Poultry","pri
 
 let siteData={settings:DEFAULT_SETTINGS,livestock:DEFAULT_LIVESTOCK,products:DEFAULT_PRODUCTS,photos:{}};
 const PHOTO_GROUPS={
+ "animal-feed-hay":"Animal Feeds & Hay",
+ "seedlings":"Seeds & Fertilizer","potato-seeds":"Seeds & Fertilizer","organic-fertilizer":"Seeds & Fertilizer","hybrid-maize-seeds":"Seeds & Fertilizer","napier-grass-seeds":"Seeds & Fertilizer",
+ "dairy-meal-50kg":"Animal Feeds & Hay","dairy-meal-70kg":"Animal Feeds & Hay","layers-mash":"Animal Feeds & Hay","growers-mash":"Animal Feeds & Hay","chick-mash":"Animal Feeds & Hay","fish-feed-50kg":"Animal Feeds & Hay","dog-meal-20kg":"Animal Feeds & Hay",
  "lactating-cows":"Lactating Cows","jersey-cows":"Jersey Cows",
  "boran-sahiwal":"Boran & Sahiwal Cattle","girolando":"Girolando Cattle",
  "boer-goat":"Boer Goats","kalro-goats":"Kalro Goats",
@@ -54,6 +57,23 @@ function renderCatalog(){
  }
  if(productsGrid){productsGrid.replaceChildren();DEFAULT_PRODUCTS.filter(item=>!FEED_TABLE_IDS.has(item.id)).forEach(item=>productsGrid.append(createCard(item)))}
 }
+function renderSectionPhoto(target,group,label){
+ if(!target)return;
+ const urls=Array.isArray(siteData.photos[group])?siteData.photos[group].filter(Boolean).slice(0,5):[];
+ target.replaceChildren();
+ if(!urls.length){target.classList.add("empty-photo");const span=document.createElement("span");span.textContent=label;target.append(span);return}
+ target.classList.remove("empty-photo");
+ const frame=document.createElement("div");frame.className="card-main-photo-frame";
+ const main=document.createElement("img");main.className="card-main-photo";main.src=urls[0];main.alt=group+" photo";main.loading="lazy";main.decoding="async";frame.append(main);target.append(frame);
+ if(urls.length>1){const thumbs=document.createElement("div");thumbs.className="card-photo-thumbs";urls.slice(1).forEach((url,index)=>{const button=document.createElement("button");button.type="button";button.className="card-photo-thumb";button.setAttribute("aria-label","Show "+group+" photo "+(index+2));const img=document.createElement("img");img.src=url;img.alt="";img.loading="lazy";button.append(img);button.onclick=()=>{main.src=url;thumbs.querySelectorAll("button").forEach(b=>b.classList.remove("active"));button.classList.add("active")};thumbs.append(button)});target.append(thumbs)}
+}
+function renderManagedPhotos(){
+ const hero=document.getElementById("home"),heroUrl=(siteData.photos["Hero Background"]||[])[0];
+ if(hero){if(heroUrl){hero.style.backgroundImage='url("'+heroUrl.replace(/"/g,"%22")+'")';hero.classList.remove("hero-background-empty")}else{hero.style.backgroundImage="";hero.classList.add("hero-background-empty")}}
+ renderSectionPhoto(document.getElementById("animalFeedsPhoto"),"Animal Feeds & Hay","ADD ANIMAL FEEDS PHOTO IN ADMIN");
+ renderSectionPhoto(document.getElementById("seedsFertilizerPhoto"),"Seeds & Fertilizer","ADD SEEDS & FERTILIZER PHOTO IN ADMIN");
+ renderSectionPhoto(document.querySelector(".about-gallery .about-main"),"About Gicheha Farm","ADD YOUR ABOUT PHOTO IN ADMIN");
+}
 function applySettings(){
  const s=siteData.settings;const set=(id,value)=>{const element=document.getElementById(id);if(element)element.textContent=value};
  ["brandName","footerName","copyrightName"].forEach(id=>set(id,s.name));
@@ -70,7 +90,7 @@ function applySettings(){
 function initMenu(){const toggle=document.getElementById("menuToggle"),nav=document.getElementById("mainNav");if(toggle&&nav){toggle.onclick=()=>nav.classList.toggle("open");nav.querySelectorAll("a").forEach(link=>link.onclick=()=>nav.classList.remove("open"))}}
 async function init(){
  try{const response=await fetch("/api/photos",{cache:"no-store"});if(response.ok){const data=await response.json();siteData.photos=data.photos||{}}}catch(error){console.warn("Using empty photo placeholders while the gallery service is unavailable.",error)}
- applySettings();renderCatalog();initMenu();
+ applySettings();renderCatalog();renderManagedPhotos();initMenu();
 }
 init();
 

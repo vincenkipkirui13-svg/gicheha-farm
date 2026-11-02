@@ -40,12 +40,12 @@
     <main class="content" id="photo-library">
       <div class="intro"><div><div class="eyebrow">Website content · Livestock imagery</div><h1>Photo library</h1><p>Choose a livestock group, arrange its gallery, and set the clearest photo as the main image. Your website changes only after publishing.</p></div><div class="intro-tag">● Photo editor ready</div></div>
       <div id="storageWarning" class="warning hidden" role="status"></div><div id="status" class="status hidden" role="status"></div>
-      <div class="stats"><div class="stat"><strong id="breedCount">—</strong><span>Animal groups</span></div><div class="stat"><strong id="photoCount">—</strong><span>Photos in library</span></div><div class="stat"><strong id="changedCount">0</strong><span>Pending changes</span></div></div>
+      <div class="stats"><div class="stat"><strong id="breedCount">—</strong><span>Photo groups</span></div><div class="stat"><strong id="photoCount">—</strong><span>Photos in library</span></div><div class="stat"><strong id="changedCount">0</strong><span>Pending changes</span></div></div>
       <div class="layout">
         <aside class="panel sidebar">
-          <div class="panel-head"><div><h2>Animal groups</h2><p>Manage the animals and bird groups shown on your website.</p></div><span class="count" id="groupCount">— groups</span></div>
+          <div class="panel-head"><div><h2>Photo sections</h2><p>Manage livestock galleries and all main website photo sections.</p></div><span class="count" id="groupCount">— groups</span></div>
           <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px"><button id="addGroup" class="primary" type="button">＋ Add group</button><button id="deleteGroup" class="danger" type="button" disabled>Delete group</button></div>
-          <input id="breedSearch" class="search" type="search" placeholder="⌕  Search animal groups…" aria-label="Search livestock groups">
+          <input id="breedSearch" class="search" type="search" placeholder="⌕  Search photo sections…" aria-label="Search photo sections">
           <div id="breedList" class="breed-list"></div>
         </aside>
         <section class="panel editor" id="editor">
@@ -57,7 +57,7 @@
             <div class="dropzone"><div class="drop-top"><div class="upload-icon">＋</div><div><strong>Build a better livestock gallery</strong><p>JPG, PNG, WebP or AVIF · maximum 3 MB per photo. For best results, use clear original photos with the animal fully visible.</p></div></div><input id="files" class="file-input" type="file" accept="image/jpeg,image/png,image/webp,image/avif" multiple><div class="upload-controls"><select id="uploadMode" aria-label="Upload mode"><option value="replace">Replace all photos in this group</option><option value="append">Add to existing photos</option></select><button id="upload" class="primary" type="button">Upload selected photos</button></div><div style="display:flex;align-items:flex-start;justify-content:space-between;gap:10px;margin-top:10px"><p id="selectedCount" class="small" style="overflow-wrap:anywhere">No files selected</p><button id="clearSelection" class="quiet" type="button" style="padding:6px 9px;font-size:11px;flex-shrink:0">Clear selection</button></div></div>
           </div>
           <div><div class="section-title"><div><h2>Gallery thumbnails</h2><p>Reorder by making a photo main, replace an individual photo, or remove it.</p></div><span class="count" id="thumbCount">0 photos</span></div><div id="grid" class="gallery-grid"></div></div>
-          <div class="savebar"><div><p id="saveMessage">No unpublished changes.</p><p class="small">Publishing updates the saved livestock galleries on your website.</p></div><div class="save-actions"><button id="reload" class="secondary" type="button">Reload saved</button><button id="save" class="primary" type="button">Publish changes ↗</button></div></div>
+          <div class="savebar"><div><p id="saveMessage">No unpublished changes.</p><p class="small">Publishing updates all website photo sections and livestock galleries.</p></div><div class="save-actions"><button id="reload" class="secondary" type="button">Reload saved</button><button id="save" class="primary" type="button">Publish changes ↗</button></div></div>
         </section>
       </div>
       <section class="panel" id="contact-settings" style="margin-top:20px"><div class="panel-head"><div><div class="eyebrow">Website contact details</div><h2>Phone & WhatsApp numbers</h2><p>Update the numbers used by the public website, including call buttons and WhatsApp inquiries.</p></div><span class="count">Live settings</span></div><div id="contactStatus" class="status hidden" role="status"></div><form id="contactForm" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr));gap:15px"><label class="field-label" for="callNumber" style="margin:0">Call phone number<input id="callNumber" name="callNumber" type="tel" inputmode="tel" autocomplete="tel" placeholder="0786113644" required style="display:block;width:100%;margin-top:7px;padding:13px;border:1px solid #d7e0d5;border-radius:10px"></label><label class="field-label" for="whatsappNumber" style="margin:0">WhatsApp number<input id="whatsappNumber" name="whatsappNumber" type="tel" inputmode="tel" autocomplete="tel" placeholder="254786113644" required style="display:block;width:100%;margin-top:7px;padding:13px;border:1px solid #d7e0d5;border-radius:10px"></label><div style="grid-column:1/-1"><p class="small">Enter a Kenyan number as 07… or +254… . WhatsApp numbers are saved in international format. Saving applies to the public site automatically.</p><button id="saveContact" class="primary" type="submit" style="margin-top:12px">Save contact details</button></div></form></section>
@@ -67,6 +67,7 @@
 <script>
 const $=id=>document.getElementById(id);
 let photos={},savedPhotos={},breeds=[],activeBreed='',dirty=false,busy=false,selectedFiles=[];
+const FEATURED_PHOTO_SECTIONS=["Hero Background","Seeds & Fertilizer","Animal Feeds & Hay","About Gicheha Farm"];
 function message(el,text,error){el.textContent=text;el.classList.remove('hidden','error');if(error)el.classList.add('error');else el.classList.remove('error')}
 function hide(el){el.classList.add('hidden')}
 function clone(value){return JSON.parse(JSON.stringify(value))}
@@ -100,7 +101,7 @@ function markDirty(){
   updateStats()
 }
 function renderBreedList(){
-  $('deleteGroup').disabled=!activeBreed;
+  $('deleteGroup').disabled=!activeBreed||FEATURED_PHOTO_SECTIONS.includes(activeBreed);
   const query=$('breedSearch').value.trim().toLowerCase();$('breedList').innerHTML='';
   breeds.filter(b=>b.toLowerCase().includes(query)).forEach(b=>{
     const btn=document.createElement('button');btn.type='button';btn.className='breed-choice'+(b===activeBreed?' active':'');
@@ -153,7 +154,7 @@ $('loginForm').addEventListener('submit',async event=>{
   finally{button.disabled=false;button.textContent='Open photo manager →'}
 });
 $('addGroup').addEventListener('click',()=>{
-  const name=prompt('Enter the livestock group name (for example, Saanen Goats):');
+  const name=prompt('Enter a new photo group name (for example, Saanen Goats):');
   if(name===null)return;
   const clean=name.trim().replace(/\\s+/g,' ');
   if(!clean)return message($('status'),'Enter a name for the livestock group.',true);
@@ -165,7 +166,7 @@ $('addGroup').addEventListener('click',()=>{
   renderBreedList();paint();markDirty();message($('status'),clean+' added. Add photos, then publish your changes.');
 });
 $('deleteGroup').addEventListener('click',()=>{
-  if(!activeBreed)return;
+  if(!activeBreed||FEATURED_PHOTO_SECTIONS.includes(activeBreed))return message($('status'),'This website photo section is required and cannot be deleted.',true);
   const name=activeBreed;
   if(!confirm('Delete the "'+name+'" livestock group and all its gallery photos? This will only affect the live website after you publish.'))return;
   delete photos[name];breeds=breeds.filter(b=>b!==name);activeBreed=breeds[0]||'';
