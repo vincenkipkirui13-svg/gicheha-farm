@@ -363,3 +363,42 @@
 
 /* Admin-managed section photos: feeds, seeds and About Gicheha Farm */
 .supplies-photo-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px;margin:22px 0 26px}.supplies-photo-card{min-width:0;background:#f5f8f2;border:1px solid var(--line);border-radius:12px;padding:14px}.supplies-photo-card h3{font-size:16px;margin:0 0 10px;color:var(--green)}.section-photo{display:flex;flex-direction:column;min-height:220px;overflow:hidden;border-radius:8px;background:#edf2e9}.section-photo.empty-photo{display:grid;place-items:center;padding:20px;color:var(--muted);font-size:12px;text-align:center}.section-photo .card-main-photo-frame{position:relative;width:100%;height:220px;min-height:220px;overflow:hidden;background:#edf2e9}.section-photo .card-main-photo{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;object-position:center}.section-photo .card-photo-thumbs{display:flex;gap:7px;padding:8px;overflow-x:auto;background:#fff;border-top:1px solid var(--line)}.section-photo .card-photo-thumb{flex:0 0 54px;width:54px;height:44px;padding:0;border:1px solid #d8e2d5;border-radius:5px;overflow:hidden;background:#edf2e9}.section-photo .card-photo-thumb img{width:100%;height:100%;object-fit:contain}.about-gallery .about-main .card-main-photo-frame{position:relative;width:100%;height:260px;min-height:260px;overflow:hidden;background:#edf2e9}.about-gallery .about-main .card-main-photo{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;object-position:center}.about-gallery .about-main .card-photo-thumbs{display:flex;gap:7px;padding:8px;overflow-x:auto;background:#fff}.about-gallery .about-main .card-photo-thumb{flex:0 0 54px;width:54px;height:44px;padding:0;border:1px solid #d8e2d5;border-radius:5px;overflow:hidden;background:#edf2e9}.about-gallery .about-main .card-photo-thumb img{width:100%;height:100%;object-fit:contain}@media(max-width:680px){.supplies-photo-grid{grid-template-columns:1fr}.section-photo .card-main-photo-frame{height:200px;min-height:200px}.about-gallery .about-main .card-main-photo-frame{height:230px;min-height:230px}}
+
+
+/* Slight mobile readability increase: keep the same design while making text easier to read. */
+@media(max-width:680px){
+  .topline{font-size:10px!important}
+  nav{font-size:14px!important}
+  .brand strong{font-size:17px!important}
+  .brand small{font-size:12px!important}
+  .eyebrow{font-size:11px!important}
+  .hero-copy>p:not(.eyebrow){font-size:16px!important}
+  .hero-points{font-size:11px!important}
+  .btn,.product-card .btn{font-size:13px!important}
+  .benefits h3{font-size:17px!important}
+  .benefits p,.section-heading p,.about-grid p,.contact-grid p{font-size:14px!important}
+  .text-link{font-size:13px!important}
+  .filter{font-size:12px!important}
+  .product-category{font-size:10px!important}
+  .product-card h3{font-size:15px!important}
+  .product-card p{font-size:12px!important}
+  .product-price{font-size:15px!important}
+  .notice{font-size:13px!important}
+  .review-card p{font-size:14px!important}
+  .review-card strong{font-size:13px!important}
+  .contact-card{font-size:14px!important}
+  .small-note{font-size:12px!important}
+  .inquiry-form label,.admin-form label{font-size:13px!important}
+  .inquiry-form input,.inquiry-form textarea,.inquiry-form select,
+  .admin-form input,.admin-form textarea,.admin-form select{font-size:14px!important}
+  .footer-links{font-size:12px!important}
+  .copyright{font-size:11px!important}
+  .admin-head p{font-size:14px!important}
+  .admin-tab{font-size:14px!important}
+  .admin-panel h2{font-size:22px!important}
+  .admin-panel>p{font-size:13px!important}
+  .photo-admin-card h3{font-size:14px!important}
+  .photo-admin-card input{font-size:12px!important}
+  .admin-product-row input,.admin-product-row select{font-size:13px!important}
+  .admin-message,.admin-status,.empty-state{font-size:13px!important}
+}
