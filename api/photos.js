@@ -8,11 +8,11 @@ function database(){
 }
 
 function validateGallery(input){
-  const source=input&&typeof input==='object'&&!Array.isArray(input)?input:{};
+  const source=input&&typeof input==='object'&&!Array.isArray(input)?input:defaults;
   const out={};
-  for(const breed of Object.keys(defaults)){
-    const items=Array.isArray(source[breed])?source[breed]:defaults[breed];
-    out[breed]=items
+  for(const breed of Object.keys(source)){
+    if(typeof breed!=='string'||!breed.trim()||breed.length>60||!Array.isArray(source[breed]))continue;
+    out[breed.trim()]=source[breed]
       .filter(url=>typeof url==='string'&&url.length<2048&&(/^(\/[^/]|https:\/\/)/.test(url)))
       .slice(0,5);
   }
