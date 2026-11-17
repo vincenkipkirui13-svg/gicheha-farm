@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="en">
-<head><link rel="icon" type="image/svg+xml" href="/favicon.svg?v=1"><link rel="shortcut icon" href="/favicon.svg?v=1"><link rel="apple-touch-icon" href="/favicon.svg?v=1"><link rel="manifest" href="/site.webmanifest">
+<head><link rel="icon" href="/api/site-icon" type="image/png"><link rel="shortcut icon" href="/api/site-icon"><link rel="manifest" href="/site.webmanifest">
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="robots" content="noindex,nofollow">
@@ -61,6 +61,7 @@
         </section>
       </div>
       <section class="panel" id="contact-settings" style="margin-top:20px"><div class="panel-head"><div><div class="eyebrow">Website contact details</div><h2>Phone & WhatsApp numbers</h2><p>Update the numbers used by the public website, including call buttons and WhatsApp inquiries.</p></div><span class="count">Live settings</span></div><div id="contactStatus" class="status hidden" role="status"></div><form id="contactForm" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr));gap:15px"><label class="field-label" for="callNumber" style="margin:0">Call phone number<input id="callNumber" name="callNumber" type="tel" inputmode="tel" autocomplete="tel" placeholder="0786113644" required style="display:block;width:100%;margin-top:7px;padding:13px;border:1px solid #d7e0d5;border-radius:10px"></label><label class="field-label" for="whatsappNumber" style="margin:0">WhatsApp number<input id="whatsappNumber" name="whatsappNumber" type="tel" inputmode="tel" autocomplete="tel" placeholder="254786113644" required style="display:block;width:100%;margin-top:7px;padding:13px;border:1px solid #d7e0d5;border-radius:10px"></label><div style="grid-column:1/-1"><p class="small">Enter a Kenyan number as 07… or +254… . WhatsApp numbers are saved in international format. Saving applies to the public site automatically.</p><button id="saveContact" class="primary" type="submit" style="margin-top:12px">Save contact details</button></div></form></section>
+    <section class="panel" id="brand-icon-settings" style="margin-top:20px"><div class="panel-head"><div><div class="eyebrow">Website branding</div><h2>Website favourite icon (favicon)</h2><p>Upload or change the small icon shown in browser tabs, bookmarks and when visitors save your website.</p></div><span class="count">Live branding</span></div><div id="iconStatus" class="status hidden" role="status"></div><div style="display:grid;grid-template-columns:110px minmax(0,1fr);gap:18px;align-items:center"><div style="width:100px;height:100px;border:1px solid var(--line);border-radius:18px;background:#f5f7f1;display:grid;place-items:center;overflow:hidden"><img id="faviconPreview" src="/api/site-icon" alt="Current Gicheha Farm website icon" style="width:76px;height:76px;object-fit:contain"></div><div><label class="field-label" for="faviconFile">Choose a new website icon</label><input id="faviconFile" type="file" accept="image/png,image/jpeg,image/webp,image/avif" style="display:block;width:100%;margin:8px 0 12px"><p class="small">Recommended: square PNG, 512 × 512 pixels. JPG, WebP and AVIF are also supported. Maximum 3 MB. Changes apply to the public website immediately after saving.</p><button id="uploadFavicon" class="primary" type="button">Upload and set website icon</button></div></div></section>
     </main>
   </div>
 </div>
@@ -141,6 +142,25 @@ async function uploadOne(file){
   const data=await new Promise((resolve,reject)=>{const reader=new FileReader();reader.onload=()=>resolve(String(reader.result).split(',')[1]);reader.onerror=()=>reject(Error('Could not read '+file.name));reader.readAsDataURL(file)});
   const result=await api('upload',{method:'POST',body:JSON.stringify({name:file.name,type:file.type,data})});return result.url
 }
+
+async function uploadFavicon(){
+ const file=$('faviconFile').files&&$('faviconFile').files[0];
+ if(!file)return message($('iconStatus'),'Choose an image file first.',true);
+ if(!['image/png','image/jpeg','image/webp','image/avif'].includes(file.type))return message($('iconStatus'),'Choose a PNG, JPG, WebP or AVIF image.',true);
+ if(file.size>3*1024*1024)return message($('iconStatus'),'The icon must be 3 MB or smaller.',true);
+ const button=$('uploadFavicon');button.disabled=true;button.textContent='Uploading…';hide($('iconStatus'));
+ try{
+  const data=await new Promise((resolve,reject)=>{const reader=new FileReader();reader.onload=()=>resolve(String(reader.result).split(',')[1]);reader.onerror=()=>reject(Error('Could not read the selected image.'));reader.readAsDataURL(file)});
+  const uploaded=await api('upload',{method:'POST',body:JSON.stringify({name:file.name,type:file.type,data})});
+  await api('settings',{method:'POST',body:JSON.stringify({settings:{iconPhotoId:uploaded.id}})});
+  const fresh='/api/site-icon?v='+Date.now();$('faviconPreview').src=fresh;
+  document.querySelectorAll('link[rel="icon"],link[rel="shortcut icon"],link[rel="apple-touch-icon"]').forEach(link=>link.href=fresh);
+  $('faviconFile').value='';message($('iconStatus'),'Website icon updated successfully. It is saved and can be changed here any time.');
+ }catch(error){message($('iconStatus'),error.message,true)}
+ finally{button.disabled=false;button.textContent='Upload and set website icon'}
+}
+$('uploadFavicon').addEventListener('click',uploadFavicon);
+
 async function load(){
   const data=await api('photos');photos=clone(data.photos||{});savedPhotos=clone(photos);breeds=data.breeds||Object.keys(photos);activeBreed=breeds[0]||'';
   $('loginView').classList.add('hidden');$('appView').classList.remove('hidden');
